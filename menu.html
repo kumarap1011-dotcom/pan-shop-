@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>PaanRaja — Order Online</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --g1:#1a4a1a;--g2:#2d7a2d;--g3:#3ea83e;
+  --gold:#c9a84c;--gold2:#f0d080;
+  --text:#111827;--muted:#6b7280;--bg:#f2f7f2;--card:#fff;
+  --sh:0 2px 12px rgba(26,74,26,.09);
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text)}
+
+/* ── HERO ── */
+.hero{background:var(--g1);background-image:
+  radial-gradient(ellipse at 10% 50%,rgba(62,168,62,.3),transparent 60%),
+  radial-gradient(ellipse at 90% 20%,rgba(201,168,76,.2),transparent 50%);
+  padding:0 20px;text-align:center;position:relative;overflow:hidden}
+.hero-inner{max-width:600px;margin:0 auto;padding:40px 0 32px}
+.hero-logo{font-size:52px;margin-bottom:12px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero-title{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:8px}
+.hero-title span{background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:15px;color:rgba(255,255,255,.75);margin-bottom:24px;line-height:1.6}
+.hero-pills{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.pill{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:#fff}
+.hero-wa{display:inline-flex;align-items:center;gap:8px;background:#25d366;color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:700;text-decoration:none;transition:all .15s;box-shadow:0 4px 20px rgba(37,211,102,.4)}
+.hero-wa:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,.5)}
+.hero-wa svg{width:20px;height:20px;fill:currentColor}
+
+/* ── MENU SECTION ── */
+.section{max-width:960px;margin:0 auto;padding:28px 16px}
+.sec-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--g1);margin-bottom:6px}
+.sec-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+
+/* FILTER */
+.filter-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:20px;scrollbar-width:none}
+.filter-row::-webkit-scrollbar{display:none}
+.fchip{white-space:nowrap;border:1.5px solid #d1e7d1;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:600;cursor:pointer;color:var(--muted);background:#fff;transition:all .13s;user-select:none}
+.fchip.on{background:var(--g1);color:#fff;border-color:var(--g1)}
+
+/* MENU GRID */
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.mcard{background:var(--card);border-radius:16px;overflow:hidden;box-shadow:var(--sh);transition:all .15s;border:2px solid transparent}
+.mcard:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(26,74,26,.15);border-color:var(--g3)}
+.mcard.sel{border-color:var(--g2)}
+.mcard-body{padding:16px}
+.mcard-emoji{font-size:32px;margin-bottom:10px;display:block}
+.mcard-top{display:flex;align-items:start;justify-content:space-between;gap:8px;margin-bottom:4px}
+.mcard-name{font-size:14px;font-weight:800;line-height:1.3}
+.mcard-badge{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--g1);font-size:9px;font-weight:800;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0}
+.mcard-desc{font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+.mcard-foot{display:flex;align-items:center;justify-content:space-between}
+.mcard-price{font-size:18px;font-weight:800;color:var(--g2)}
+.add-btn{width:32px;height:32px;border-radius:50%;background:var(--g1);color:#fff;border:none;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s;user-select:none}
+.add-btn:hover{background:var(--g2);transform:scale(1.12)}
+.add-btn:active{transform:scale(.9)}
+.qty-ctrl{display:flex;align-items:center;gap:6px}
+.qb{width:28px;height:28px;border-radius:50%;border:1.5px solid #d1e7d1;background:#fff;cursor:pointer;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;transition:all .1s;user-select:none}
+.qb:hover{background:var(--g1);color:#fff;border-color:var(--g1)}
+.qb:active{transform:scale(.88)}
+.qn{font-size:13px;font-weight:800;min-width:20px;text-align:center}
+
+/* CART STRIP */
+.cart-strip{position:fixed;bottom:0;left:0;right:0;background:var(--g1);padding:12px 20px;display:none;align-items:center;gap:14px;z-index:100;box-shadow:0 -4px 20px rgba(0,0,0,.2)}
+.cart-strip.show{display:flex}
+.cs-info{flex:1}
+.cs-count{color:rgba(255,255,255,.75);font-size:12px;font-weight:600}
+.cs-total{color:#fff;font-size:18px;font-weight:800;letter-spacing:-.5px}
+.cs-btn{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--g1);border:none;border-radius:12px;padding:12px 22px;font-size:14px;font-weight:800;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif;white-space:nowrap}
+.cs-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,168,76,.5)}
+
+/* ORDER FORM */
+.order-form-wrap{background:var(--g1);background-image:radial-gradient(ellipse at 80%,rgba(62,168,62,.2),transparent);padding:32px 16px 60px}
+.order-form{background:var(--card);border-radius:20px;max-width:560px;margin:0 auto;padding:28px;box-shadow:0 8px 40px rgba(0,0,0,.2)}
+.of-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--g1);margin-bottom:4px}
+.of-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.of-section{margin-bottom:18px}
+.of-label{font-size:12px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+.of-input{width:100%;border:1.5px solid #d1e7d1;border-radius:10px;padding:11px 14px;font-size:13px;color:var(--text);outline:none;font-family:'Inter',sans-serif;transition:border-color .15s}
+.of-input:focus{border-color:var(--g2);box-shadow:0 0 0 3px rgba(45,122,45,.1)}
+.of-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.of-summary{background:#f2f7f2;border-radius:12px;padding:14px;margin-bottom:16px}
+.of-item{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid #e5e7eb}
+.of-item:last-child{border:none}
+.of-item .n{font-weight:600}
+.of-item .v{font-weight:700;color:var(--g2)}
+.of-total{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--g1);border-radius:10px;margin-bottom:14px}
+.of-total .l{color:rgba(255,255,255,.8);font-size:13px;font-weight:600}
+.of-total .r{color:#fff;font-size:20px;font-weight:800}
+.order-btn{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border:none;font-size:15px;font-weight:800;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif;margin-bottom:10px}
+.order-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,74,26,.35)}
+.wa-order-btn{width:100%;padding:12px;border-radius:12px;background:#25d366;color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
+.wa-order-btn:hover{background:#1fb956;transform:translateY(-1px)}
+.wa-order-btn svg{width:18px;height:18px;fill:currentColor}
+
+/* SUCCESS */
+.success-box{text-align:center;padding:24px}
+.success-icon{font-size:56px;margin-bottom:14px}
+.success-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:var(--g1);margin-bottom:8px}
+.success-sub{font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.6}
+.back-btn{display:inline-block;padding:11px 24px;border-radius:10px;background:var(--g1);color:#fff;text-decoration:none;font-size:14px;font-weight:700}
+
+/* INFO SECTION */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:24px}
+.info-card{background:var(--card);border-radius:16px;padding:20px;box-shadow:var(--sh);text-align:center}
+.info-icon{font-size:32px;margin-bottom:10px}
+.info-title{font-size:14px;font-weight:700;color:var(--g1);margin-bottom:4px}
+.info-text{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* Footer */
+.footer{background:var(--g1);color:rgba(255,255,255,.6);text-align:center;padding:20px;font-size:12px}
+.footer strong{color:rgba(255,255,255,.9)}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-logo">🍃</div>
+    <h1 class="hero-title">Welcome to <span>PaanRaja</span></h1>
+    <p class="hero-sub">Ahmedabad's finest premium paan since 1998.<br>Order fresh, made-to-order paan delivered to your doorstep.</p>
+    <div class="hero-pills">
+      <span class="pill">🔥 Fire Paan</span>
+      <span class="pill">✨ Gold Leaf Paan</span>
+      <span class="pill">🍫 Chocolate Paan</span>
+      <span class="pill">🥤 Paan Shakes</span>
+    </div>
+    <a href="https://wa.me/919876543210" target="_blank" class="hero-wa">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Order on WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- MENU -->
+<div class="section">
+  <h2 class="sec-title">Our Menu</h2>
+  <p class="sec-sub">Tap any item to add to your order. Fresh ingredients, made with love.</p>
+  <div class="filter-row" id="filterRow">
+    <span class="fchip on" onclick="filterCat(this,'All')">All</span>
+  </div>
+  <div class="menu-grid" id="menuGrid"></div>
+</div>
+
+<!-- CART STRIP -->
+<div class="cart-strip" id="cartStrip">
+  <div class="cs-info">
+    <div class="cs-count" id="csCount">0 items</div>
+    <div class="cs-total" id="csTotal">₹0</div>
+  </div>
+  <button class="cs-btn" onclick="scrollToOrder()">Place Order →</button>
+</div>
+
+<!-- ORDER FORM -->
+<div class="order-form-wrap" id="orderSection">
+  <div class="order-form" id="orderFormCard">
+    <div class="of-title">Place Your Order</div>
+    <p class="of-sub">Fill in your details and we'll confirm on WhatsApp</p>
+
+    <div class="of-grid">
+      <div class="of-section">
+        <label class="of-label">Your Name *</label>
+        <input class="of-input" id="oName" placeholder="Ramesh Patel" maxlength="40">
+      </div>
+      <div class="of-section">
+        <label class="of-label">Phone *</label>
+        <input class="of-input" id="oPhone" placeholder="98765 43210" type="tel" maxlength="10">
+      </div>
+    </div>
+    <div class="of-section">
+      <label class="of-label">Address / Pickup Note</label>
+      <input class="of-input" id="oAddr" placeholder="Delivery address or 'Pickup from shop'">
+    </div>
+    <div class="of-section">
+      <label class="of-label">Special Instructions</label>
+      <input class="of-input" id="oNote" placeholder="No tobacco, extra sweet, etc.">
+    </div>
+
+    <div class="of-section">
+      <label class="of-label">Your Order</label>
+      <div class="of-summary" id="ofSummary">
+        <div style="color:var(--muted);font-size:13px;text-align:center;padding:8px 0">No items selected yet</div>
+      </div>
+      <div class="of-total"><span class="l">TOTAL</span><span class="r" id="ofTotal">₹0</span></div>
+    </div>
+
+    <button class="order-btn" onclick="placeOrder()">✅ Confirm Order</button>
+    <button class="wa-order-btn" onclick="waOrder()">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Order via WhatsApp
+    </button>
+  </div>
+</div>
+
+<!-- INFO -->
+<div class="section">
+  <h2 class="sec-title">Why PaanRaja?</h2>
+  <div class="info-grid">
+    <div class="info-card"><div class="info-icon">🌿</div><div class="info-title">Fresh Daily</div><div class="info-text">Betel leaves sourced fresh from Nashik every morning. No preservatives, ever.</div></div>
+    <div class="info-card"><div class="info-icon">👨‍🍳</div><div class="info-title">Expert Craftsmen</div><div class="info-text">Over 25 years of paan-making expertise. Every paan folded to perfection.</div></div>
+    <div class="info-card"><div class="info-icon">🚀</div><div class="info-title">Fast Delivery</div><div class="info-text">Within 5 km of our shop. Order placed, paan delivered in 30 minutes.</div></div>
+    <div class="info-card"><div class="info-icon">📍</div><div class="info-title">Visit Us</div><div class="info-text">Near Lal Darwaza, Old City, Ahmedabad. Open 10 AM – 11 PM, 7 days a week.</div></div>
+  </div>
+</div>
+
+<div class="footer">
+  <strong>🍃 PaanRaja</strong> &nbsp;·&nbsp; +91 98765 43210 &nbsp;·&nbsp; paanraja.in<br>
+  Near Lal Darwaza, Ahmedabad 380001 &nbsp;·&nbsp; Open 10 AM – 11 PM
+</div>
+
+<script src="shared.js"></script>
+<script>
+var cart=[], allItems=getAllItems();
+
+// Build filter chips
+var fr=document.getElementById('filterRow');
+Object.keys(MENU).forEach(function(cat){
+  var c=document.createElement('span'); c.className='fchip'; c.textContent=cat;
+  c.onclick=function(){ filterCat(c,cat); }; fr.appendChild(c);
+});
+
+function filterCat(el,cat){
+  document.querySelectorAll('.fchip').forEach(function(c){c.classList.remove('on')});
+  el.classList.add('on');
+  renderGrid(cat==='All'?allItems:allItems.filter(function(i){return i.category===cat}));
+}
+
+function renderGrid(items){
+  var g=document.getElementById('menuGrid');
+  g.innerHTML=items.map(function(it){
+    var ci=cart.find(function(c){return c.id===it.id});
+    var qty=ci?ci.qty:0;
+    return '<div class="mcard'+(qty>0?' sel':'')+'" id="mc_'+it.id+'">'+
+      '<div class="mcard-body">'+
+      '<span class="mcard-emoji">'+it.emoji+'</span>'+
+      '<div class="mcard-top"><span class="mcard-name">'+it.name+'</span>'+(it.popular?'<span class="mcard-badge">★ HOT</span>':'')+'</div>'+
+      '<div class="mcard-desc">'+it.desc+'</div>'+
+      '<div class="mcard-foot">'+
+      '<span class="mcard-price">₹'+it.price+'</span>'+
+      (qty===0
+        ?'<button class="add-btn" onclick="addItem(\''+it.id+'\')">+</button>'
+        :'<div class="qty-ctrl"><button class="qb" onclick="chgQty(\''+it.id+'\',-1)">−</button><span class="qn">'+qty+'</span><button class="qb" onclick="chgQty(\''+it.id+'\',1)">+</button></div>')+
+      '</div></div></div>';
+  }).join('');
+}
+
+function addItem(id){
+  var item=allItems.find(function(i){return i.id===id}); if(!item) return;
+  var ex=cart.find(function(c){return c.id===id});
+  if(ex) ex.qty++; else cart.push({id:item.id,name:item.name,price:item.price,emoji:item.emoji,qty:1});
+  if(navigator.vibrate) navigator.vibrate(18);
+  updateUI();
+}
+
+function chgQty(id,d){
+  var i=cart.findIndex(function(c){return c.id===id}); if(i<0) return;
+  cart[i].qty+=d; if(cart[i].qty<=0) cart.splice(i,1);
+  updateUI();
+}
+
+function updateUI(){
+  var curCat=document.querySelector('.fchip.on').textContent;
+  renderGrid(curCat==='All'?allItems:allItems.filter(function(i){return i.category===curCat}));
+  var tot=cart.reduce(function(s,c){return s+c.price*c.qty},0);
+  var cnt=cart.reduce(function(s,c){return s+c.qty},0);
+  var strip=document.getElementById('cartStrip');
+  strip.className='cart-strip'+(cart.length?' show':'');
+  document.getElementById('csCount').textContent=cnt+' item'+(cnt!==1?'s':'');
+  document.getElementById('csTotal').textContent='₹'+tot;
+  // update order form
+  var summary=document.getElementById('ofSummary');
+  document.getElementById('ofTotal').textContent='₹'+(tot+Math.round(tot*0.05));
+  if(!cart.length){
+    summary.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:8px 0">No items selected yet</div>';
+  } else {
+    summary.innerHTML=cart.map(function(c){
+      return '<div class="of-item"><span class="n">'+c.emoji+' '+c.name+' ×'+c.qty+'</span><span class="v">₹'+(c.price*c.qty)+'</span></div>';
+    }).join('')+
+    '<div class="of-item" style="color:var(--muted)"><span class="n">GST (5%)</span><span class="v">₹'+Math.round(tot*0.05)+'</span></div>';
+  }
+}
+
+function scrollToOrder(){ document.getElementById('orderSection').scrollIntoView({behavior:'smooth'}); }
+
+function placeOrder(){
+  var name=document.getElementById('oName').value.trim();
+  var phone=document.getElementById('oPhone').value.trim();
+  if(!name||!phone){ alert('Please enter name and phone'); return; }
+  if(!cart.length){ alert('Please add items to your order'); return; }
+  var tot=cart.reduce(function(s,c){return s+c.price*c.qty},0);
+  var gst=Math.round(tot*0.05);
+  var order={
+    id:'ONL'+Date.now(),
+    ts:Date.now(),
+    date:new Date().toLocaleDateString('en-IN'),
+    time:new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}),
+    name:name, phone:phone,
+    address:document.getElementById('oAddr').value,
+    note:document.getElementById('oNote').value,
+    items:JSON.parse(JSON.stringify(cart)),
+    subtotal:tot, gst:gst, total:tot+gst,
+    accepted:false
+  };
+  var orders=getOnlineOrders(); orders.push(order); saveOnlineOrders(orders);
+  document.getElementById('orderFormCard').innerHTML=
+    '<div class="success-box">'+
+    '<div class="success-icon">🎉</div>'+
+    '<div class="success-title">Order Placed!</div>'+
+    '<div class="success-sub">Thank you, <strong>'+name+'</strong>!<br>Order #'+order.id.slice(-6)+' · Total: ₹'+order.total+'<br>We\'ll confirm on WhatsApp shortly.</div>'+
+    '<a href="menu.html" class="back-btn">Order Again</a>'+
+    '</div>';
+  cart=[];
+  document.getElementById('cartStrip').className='cart-strip';
+}
+
+function waOrder(){
+  var name=document.getElementById('oName').value.trim()||'Customer';
+  var phone=document.getElementById('oPhone').value.trim();
+  if(!cart.length){ alert('Please add items first'); return; }
+  var tot=cart.reduce(function(s,c){return s+c.price*c.qty},0);
+  var gst=Math.round(tot*0.05);
+  var lines=['🍃 *PaanRaja Order*','','Name: '+name,(phone?'Phone: '+phone:''),''];
+  cart.forEach(function(c){ lines.push('• '+c.emoji+' '+c.name+' ×'+c.qty+' = ₹'+(c.price*c.qty)); });
+  var addr=document.getElementById('oAddr').value;
+  var note=document.getElementById('oNote').value;
+  lines.push('','Subtotal: ₹'+tot,'GST: ₹'+gst,'*Total: ₹'+(tot+gst)+'*');
+  if(addr) lines.push('Address: '+addr);
+  if(note) lines.push('Note: '+note);
+  window.open('https://wa.me/919876543210?text='+encodeURIComponent(lines.filter(Boolean).join('\n')),'_blank');
+}
+
+renderGrid(allItems);
+</script>
+</body>
+</html>
