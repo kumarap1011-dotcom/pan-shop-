@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PanShop — Staff Login</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g1:#1a4a1a;--g2:#2d7a2d;--g3:#3ea83e;--g4:#7ecf7e;
+  --gold:#c9a84c;--gold2:#f0d080;--gold3:#fff8e1;
+  --text:#1a1a1a;--muted:#6b7280;--bg:#f7f9f4;--card:#fff;
+  --shadow:0 4px 24px rgba(26,74,26,.12);
+}
+body{font-family:'Inter',sans-serif;background:var(--g1);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;
+  background-image:radial-gradient(ellipse at 20% 50%,rgba(62,168,62,.15) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.1) 0%,transparent 50%);
+}
+.wrap{width:100%;max-width:420px}
+.logo-block{text-align:center;margin-bottom:32px}
+.logo-icon{width:80px;height:80px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 16px;box-shadow:0 8px 32px rgba(201,168,76,.4)}
+.logo-name{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:#fff;letter-spacing:-1px}
+.logo-sub{font-size:13px;color:rgba(255,255,255,.6);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+.card{background:var(--card);border-radius:20px;padding:32px;box-shadow:var(--shadow)}
+.card h2{font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px}
+.card .sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+.staff-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px}
+.staff-card{border:2px solid #e5e7eb;border-radius:12px;padding:14px 10px;cursor:pointer;text-align:center;transition:all .18s;background:#fff}
+.staff-card:hover,.staff-card.sel{border-color:var(--g2);background:rgba(45,122,45,.06)}
+.staff-card.sel{border-color:var(--g2);box-shadow:0 0 0 3px rgba(45,122,45,.15)}
+.staff-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--g2),var(--g3));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;margin:0 auto 8px}
+.staff-nm{font-size:12px;font-weight:700;color:var(--text)}
+.staff-rl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.pin-label{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px;display:block}
+.pin-row{display:flex;gap:10px;margin-bottom:20px;justify-content:center}
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid #d1d5db;background:transparent;transition:all .15s}
+.pin-dot.fill{background:var(--g2);border-color:var(--g2)}
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.num-btn{padding:16px;border-radius:12px;border:1.5px solid #e5e7eb;background:#f9fafb;font-size:20px;font-weight:700;cursor:pointer;color:var(--text);transition:all .12s;font-family:'Inter',sans-serif}
+.num-btn:hover{background:var(--g1);color:#fff;border-color:var(--g1)}
+.num-btn:active{transform:scale(.94)}
+.num-btn.del{font-size:16px;color:var(--muted)}
+.login-btn{width:100%;padding:14px;border-radius:12px;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border:none;font-size:15px;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:.3px}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,74,26,.35)}
+.login-btn:active{transform:translateY(0)}
+.login-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.err{color:#dc2626;font-size:13px;text-align:center;margin-top:10px;min-height:20px;font-weight:500}
+.divider{display:flex;align-items:center;gap:10px;margin:20px 0}
+.divider hr{flex:1;border:none;border-top:1px solid #e5e7eb}
+.divider span{font-size:12px;color:var(--muted)}
+.quick-links{display:flex;gap:8px;justify-content:center}
+.quick-links a{font-size:12px;color:var(--g2);text-decoration:none;font-weight:600;padding:6px 12px;border:1px solid rgba(45,122,45,.3);border-radius:8px;transition:all .12s}
+.quick-links a:hover{background:var(--g2);color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo-block">
+    <div class="logo-icon">🍃</div>
+    <div class="logo-name">PaanRaja</div>
+    <div class="logo-sub">Premium Pan Shop · POS System</div>
+  </div>
+
+  <div class="card">
+    <h2>Staff Login</h2>
+    <p class="sub">Select your name, then enter your 4-digit PIN</p>
+
+    <div class="staff-grid" id="staffGrid"></div>
+
+    <span class="pin-label">Enter PIN</span>
+    <div class="pin-row" id="pinRow">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+    </div>
+
+    <div class="numpad">
+      <button class="num-btn" onclick="pressPin('1')">1</button>
+      <button class="num-btn" onclick="pressPin('2')">2</button>
+      <button class="num-btn" onclick="pressPin('3')">3</button>
+      <button class="num-btn" onclick="pressPin('4')">4</button>
+      <button class="num-btn" onclick="pressPin('5')">5</button>
+      <button class="num-btn" onclick="pressPin('6')">6</button>
+      <button class="num-btn" onclick="pressPin('7')">7</button>
+      <button class="num-btn" onclick="pressPin('8')">8</button>
+      <button class="num-btn" onclick="pressPin('9')">9</button>
+      <button class="num-btn del" onclick="clearPin()">CLR</button>
+      <button class="num-btn" onclick="pressPin('0')">0</button>
+      <button class="num-btn del" onclick="delPin()">⌫</button>
+    </div>
+
+    <button class="login-btn" id="loginBtn" onclick="doLogin()" disabled>Login</button>
+    <div class="err" id="errMsg"></div>
+
+    <div class="divider"><hr><span>Quick Access (Demo)</span><hr></div>
+    <div class="quick-links">
+      <a href="#" onclick="demoLogin('S1')">👑 Owner</a>
+      <a href="#" onclick="demoLogin('S2')">💼 Cashier</a>
+    </div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+var selStaff=null, pin='';
+
+// Render staff cards
+var grid=document.getElementById('staffGrid');
+STAFF.forEach(function(s){
+  var d=document.createElement('div');
+  d.className='staff-card'; d.onclick=function(){ selStaff=s; pin=''; updateDots();
+    document.querySelectorAll('.staff-card').forEach(function(c){c.classList.remove('sel')});
+    d.classList.add('sel'); errMsg.textContent='';
+  };
+  d.innerHTML='<div class="staff-av">'+s.avatar+'</div><div class="staff-nm">'+s.name.split(' ')[0]+'</div><div class="staff-rl">'+s.role+'</div>';
+  grid.appendChild(d);
+});
+
+var errMsg=document.getElementById('errMsg');
+var loginBtn=document.getElementById('loginBtn');
+
+function pressPin(n){
+  if(!selStaff){ errMsg.textContent='Please select a staff member first'; return; }
+  if(pin.length>=4) return;
+  pin+=n; updateDots();
+  if(pin.length===4) loginBtn.disabled=false;
+}
+function delPin(){ pin=pin.slice(0,-1); updateDots(); loginBtn.disabled=pin.length<4; }
+function clearPin(){ pin=''; updateDots(); loginBtn.disabled=true; errMsg.textContent=''; }
+function updateDots(){
+  for(var i=0;i<4;i++) document.getElementById('pd'+i).className='pin-dot'+(i<pin.length?' fill':'');
+}
+function doLogin(){
+  if(!selStaff){ errMsg.textContent='Select a staff member'; return; }
+  if(selStaff.pin===pin){
+    setSession({id:selStaff.id,name:selStaff.name,role:selStaff.role,avatar:selStaff.avatar,loginTime:Date.now()});
+    window.location='pos.html';
+  } else {
+    errMsg.textContent='Incorrect PIN. Try again.';
+    pin=''; updateDots(); loginBtn.disabled=true;
+    document.getElementById('loginBtn').style.animation='shake .3s';
+    setTimeout(function(){ document.getElementById('loginBtn').style.animation=''; },400);
+  }
+}
+function demoLogin(id){
+  var s=STAFF.find(function(x){return x.id===id});
+  setSession({id:s.id,name:s.name,role:s.role,avatar:s.avatar,loginTime:Date.now()});
+  window.location='pos.html';
+}
+</script>
+<style>@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}</style>
+</body>
+</html>
